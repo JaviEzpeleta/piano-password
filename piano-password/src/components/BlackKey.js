@@ -1,6 +1,6 @@
 import React from "react";
 
-function BlackKey({ className = "", dataKey = "", playSound }) {
+function BlackKey({ className = "", dataKey = "", playSound, name }) {
   return (
     <div
       onClick={playSound}
@@ -9,7 +9,7 @@ function BlackKey({ className = "", dataKey = "", playSound }) {
         hover:bg-gray-900 transition-all cursor-pointer
         active:translate-y-1 text-white flex flex-col-reverse items-center`}
     >
-      {dataKey}
+      {name}
     </div>
   );
 }

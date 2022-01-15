@@ -1,6 +1,9 @@
 import React from "react";
 
-function WhiteKey({ dataKey = ".", playSound }) {
+function WhiteKey({ dataKey = ".", playSound, name }) {
+  console.log("name");
+  console.log(name);
+
   return (
     <div
       className="border bg-gray-100 border-black rounded-sm shadow-lg m-0.5 h-60 w-12
@@ -8,7 +11,7 @@ function WhiteKey({ dataKey = ".", playSound }) {
         active:translate-y-1 flex flex-col-reverse items-center"
       onClick={playSound}
     >
-      {dataKey}
+      {name}
     </div>
   );
 }
