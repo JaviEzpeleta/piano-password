@@ -3,19 +3,23 @@ import WhiteKey from "./WhiteKey";
 import BlackKey from "./BlackKey";
 
 const whiteNotes = [65, 83, 68, 70, 71, 72, 74, 75];
-const blackNotes = [87, 2, 3, 4, 5, 6];
+const blackNotes = [
+  87, 69, 84, 89, 85,
+  //, 73
+];
 
 function PianoPassword() {
   const allNotesRef = useRef([]);
 
   const playSound = (key) => {
     // play it here:
-    allNotesRef.current[key].currentTime = 0;
-    allNotesRef.current[key].play();
+    if (allNotesRef.current[key]) {
+      allNotesRef.current[key].currentTime = 0;
+      allNotesRef.current[key].play();
+    }
   };
 
   const logKeyDown = (e) => {
-    console.log("Key was pressed! 🤡🤡🤡🤡🤡");
     console.log(e.keyCode);
     playSound(e.keyCode);
   };
@@ -52,17 +56,10 @@ function PianoPassword() {
           ))}
       </div>
 
-      <div
-        className="bg-blue-400 rounded px-4 py-2 m-8 inline-block cursor-pointer"
-        onClick={playSound}
-      >
-        PLAY ME
-      </div>
-
       {whiteNotes &&
         whiteNotes.map((key, index) => (
           <audio
-            controls
+            key={index}
             src={`/sounds/${key}.mp3`}
             ref={(el) => (allNotesRef.current[key] = el)}
           ></audio>
@@ -70,7 +67,7 @@ function PianoPassword() {
       {blackNotes &&
         blackNotes.map((key, index) => (
           <audio
-            controls
+            key={index}
             src={`/sounds/${key}.mp3`}
             ref={(el) => (allNotesRef.current[key] = el)}
           ></audio>
