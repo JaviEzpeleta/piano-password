@@ -2,7 +2,8 @@ import React, { useRef, useEffect } from "react";
 import WhiteKey from "./WhiteKey";
 import BlackKey from "./BlackKey";
 
-const whiteNotes = [40, 42, 44];
+const whiteNotes = [65, 83, 68, 70, 71, 72, 74, 75];
+const blackNotes = [87, 2, 3, 4, 5, 6];
 
 function PianoPassword() {
   const allNotesRef = useRef([]);
@@ -13,20 +14,32 @@ function PianoPassword() {
     allNotesRef.current[key].play();
   };
 
-  useEffect(() => {}, []);
+  const logKeyDown = (e) => {
+    console.log("Key was pressed! 🤡🤡🤡🤡🤡");
+    console.log(e.keyCode);
+    playSound(e.keyCode);
+  };
+
+  useEffect(() => {
+    window.addEventListener("keydown", logKeyDown);
+  }, []);
 
   return (
     <div className="m-20 relative inline-block p-4 rounded-lg bg-purple-200 select-none">
       {/* <div>Piano component!!</div> */}
 
       <div className="flex items-center absolute ml-7">
-        <BlackKey dataKey="C#" playSound={playSound} />
-        <BlackKey dataKey="D#" playSound={playSound} className="mr-12" />
-        <BlackKey dataKey="F#" playSound={playSound} />
-        <BlackKey dataKey="G#" playSound={playSound} />
-        <BlackKey dataKey="A#" playSound={playSound} className="mr-14" />
-        <BlackKey dataKey="C#" playSound={playSound} />
-        <BlackKey dataKey="D#" playSound={playSound} />
+        {blackNotes &&
+          blackNotes.map((key, index) => (
+            <BlackKey
+              key={index}
+              dataKey={key}
+              className={`${
+                index === 1 ? "mr-12" : index === 4 ? "mr-14" : ""
+              }`}
+              playSound={() => playSound(key)}
+            />
+          ))}
       </div>
       <div className="flex items-center">
         {whiteNotes &&
@@ -48,6 +61,14 @@ function PianoPassword() {
 
       {whiteNotes &&
         whiteNotes.map((key, index) => (
+          <audio
+            controls
+            src={`/sounds/${key}.mp3`}
+            ref={(el) => (allNotesRef.current[key] = el)}
+          ></audio>
+        ))}
+      {blackNotes &&
+        blackNotes.map((key, index) => (
           <audio
             controls
             src={`/sounds/${key}.mp3`}
