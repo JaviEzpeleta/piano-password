@@ -1,16 +1,19 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import WhiteKey from "./WhiteKey";
 import BlackKey from "./BlackKey";
 
+const whiteNotes = [40, 42, 44];
+
 function PianoPassword() {
-  const myAudio = useRef();
+  const allNotesRef = useRef([]);
 
-  const playSound = () => {
+  const playSound = (key) => {
     // play it here:
-
-    myAudio.current.currentTime = 0;
-    myAudio.current.play();
+    allNotesRef.current[key].currentTime = 0;
+    allNotesRef.current[key].play();
   };
+
+  useEffect(() => {}, []);
 
   return (
     <div className="m-20 relative inline-block p-4 rounded-lg bg-purple-200 select-none">
@@ -26,16 +29,14 @@ function PianoPassword() {
         <BlackKey dataKey="D#" playSound={playSound} />
       </div>
       <div className="flex items-center">
-        <WhiteKey dataKey="C" />
-        <WhiteKey dataKey="D" />
-        <WhiteKey dataKey="E" />
-        <WhiteKey dataKey="F" />
-        <WhiteKey dataKey="G" />
-        <WhiteKey dataKey="A" />
-        <WhiteKey dataKey="B" />
-        <WhiteKey dataKey="C" />
-        <WhiteKey dataKey="D" />
-        <WhiteKey dataKey="E" />
+        {whiteNotes &&
+          whiteNotes.map((key, index) => (
+            <WhiteKey
+              key={index}
+              dataKey={key}
+              playSound={() => playSound(key)}
+            />
+          ))}
       </div>
 
       <div
@@ -45,7 +46,15 @@ function PianoPassword() {
         PLAY ME
       </div>
 
-      <audio controls src="/sounds/40.mp3" ref={myAudio}></audio>
+      {whiteNotes &&
+        whiteNotes.map((key, index) => (
+          <audio
+            controls
+            src={`/sounds/${key}.mp3`}
+            ref={(el) => (allNotesRef.current[key] = el)}
+          ></audio>
+        ))}
+
       {/* <audio src="sounds/40.mp3"></audio> */}
     </div>
   );
