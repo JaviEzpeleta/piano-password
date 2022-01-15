@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import WhiteKey from "./WhiteKey";
 import BlackKey from "./BlackKey";
 import { useSelector, useDispatch } from "react-redux";
@@ -26,11 +26,14 @@ const blackNotes = [
   { keyCode: 85, note: "U" },
 ];
 
+const secretMelody = "A,A,S,A,F,D";
+
 function PianoPassword() {
+  // useState hasFoundTheMelody
+  const [hasFoundTheMelody, setHasFoundTheMelody] = useState(false);
+
   const dispatch = useDispatch();
   const melody = useSelector((state) => state.melody);
-
-  console.log("melody", melody);
 
   const allNotesRef = useRef([]);
 
@@ -50,8 +53,8 @@ function PianoPassword() {
   };
 
   const logKeyDown = (e) => {
-    console.log(e);
-    console.log(e.keyCode);
+    // console.log(e);
+    // console.log(e.keyCode);
     playSound(e.keyCode);
     saveMelody(e.key.toUpperCase());
   };
@@ -60,43 +63,77 @@ function PianoPassword() {
     window.addEventListener("keydown", logKeyDown);
   }, []);
 
+  const melodyMatchesSecretPassword = () => {
+    return melody.includes(secretMelody);
+  };
+
+  useEffect(() => {
+    console.log("Melody changed!!!");
+    console.log(melody);
+
+    if (melodyMatchesSecretPassword()) {
+      setHasFoundTheMelody(true);
+    }
+  }, [melody]);
+
+  // if (hasFoundTheMelody) {
+  //   return (
+  //     <div className="flex flex-col items-center justify-center h-screen">
+  //       <h1 className="text-4xl text-green-500">
+  //         Congratulations! You found the secret password!
+  //       </h1>
+  //     </div>
+  //   );
+  // }
+
   return (
     <div className="m-20 relative inline-block p-4 rounded-lg bg-purple-200 select-none">
       {/* <div>Piano component!!</div> */}
 
-      <div className="flex items-center absolute ml-7">
-        {blackNotes &&
-          blackNotes.map(({ keyCode, note }, index) => (
-            <BlackKey
-              key={index}
-              dataKey={keyCode}
-              name={note}
-              className={`${
-                index === 1 ? "mr-12" : index === 4 ? "mr-14" : ""
-              }`}
-              playSound={() => {
-                playSound(keyCode);
-                saveMelody(note);
-              }}
-            />
-          ))}
-      </div>
-      <div className="flex items-center">
-        {whiteNotes &&
-          whiteNotes.map(({ keyCode, note }, index) => (
-            <WhiteKey
-              key={index}
-              name={note}
-              dataKey={keyCode}
-              playSound={() => {
-                playSound(keyCode);
-                saveMelody(note);
-              }}
-            />
-          ))}
-      </div>
+      {hasFoundTheMelody && (
+        <div className="flex flex-col items-center justify-center h-screen">
+          <h1 className="text-4xl text-green-500">
+            Congratulations! You found the secret password!
+          </h1>
+        </div>
+      )}
+      {!hasFoundTheMelody && (
+        <>
+          <div className="flex items-center absolute ml-7">
+            {blackNotes &&
+              blackNotes.map(({ keyCode, note }, index) => (
+                <BlackKey
+                  key={index}
+                  dataKey={keyCode}
+                  name={note}
+                  className={`${
+                    index === 1 ? "mr-12" : index === 4 ? "mr-14" : ""
+                  }`}
+                  playSound={() => {
+                    playSound(keyCode);
+                    saveMelody(note);
+                  }}
+                />
+              ))}
+          </div>
+          <div className="flex items-center">
+            {whiteNotes &&
+              whiteNotes.map(({ keyCode, note }, index) => (
+                <WhiteKey
+                  key={index}
+                  name={note}
+                  dataKey={keyCode}
+                  playSound={() => {
+                    playSound(keyCode);
+                    saveMelody(note);
+                  }}
+                />
+              ))}
+          </div>
+        </>
+      )}
 
-      <div className="m-4 p-4 bg-blue-400 text-center">{melody}</div>
+      {/* <div className="m-4 p-4 bg-blue-400 text-center">{melody}</div> */}
 
       {whiteNotes &&
         whiteNotes.map(({ keyCode }, index) => (
