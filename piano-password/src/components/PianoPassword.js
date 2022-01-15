@@ -8,25 +8,25 @@ function PianoPassword() {
       {/* <div>Piano component!!</div> */}
 
       <div className="flex items-center absolute ml-7">
-        <BlackKey />
-        <BlackKey className="mr-12" />
-        <BlackKey />
-        <BlackKey />
-        <BlackKey className="mr-14" />
-        <BlackKey />
-        <BlackKey />
+        <BlackKey dataKey="C#" />
+        <BlackKey dataKey="D#" className="mr-12" />
+        <BlackKey dataKey="F#" />
+        <BlackKey dataKey="G#" />
+        <BlackKey dataKey="A#" className="mr-14" />
+        <BlackKey dataKey="C#" />
+        <BlackKey dataKey="D#" />
       </div>
-      <div className="flex items-center mt-20">
-        <WhiteKey />
-        <WhiteKey />
-        <WhiteKey />
-        <WhiteKey />
-        <WhiteKey />
-        <WhiteKey />
-        <WhiteKey />
-        <WhiteKey />
-        <WhiteKey />
-        <WhiteKey />
+      <div className="flex items-center">
+        <WhiteKey dataKey="C" />
+        <WhiteKey dataKey="D" />
+        <WhiteKey dataKey="E" />
+        <WhiteKey dataKey="F" />
+        <WhiteKey dataKey="G" />
+        <WhiteKey dataKey="A" />
+        <WhiteKey dataKey="B" />
+        <WhiteKey dataKey="C" />
+        <WhiteKey dataKey="D" />
+        <WhiteKey dataKey="E" />
       </div>
     </div>
   );
